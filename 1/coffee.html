@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		
+		<script>
+
+		function CoffeMachine(power) {
+			var waterAmount = 50;
+			var waterCapacity = 4200;
+			var temp = 90;
+				// * внести значения зерен
+			var coffeeAmount = 0;
+			this.checkWater = function() {
+				return waterAmount;
+			}
+		// Добавить дополнение значения воды
+			this.fillWater = function(newAmount) {
+				if (newAmount >= 50) {
+					waterAmount = waterAmount + newAmount
+				} else {
+					console.error('Слишком мало воды');
+				}
+				console.log(waterAmount + " ml")
+			}
+			this.fillCoffe = function(newAmount) {
+				if (newAmount >= 50) {
+					coffeeAmount = coffeeAmount + newAmount
+				} else {
+					console.error('Недостаточно кофе');
+				}
+				console.log(coffeeAmount + " g")
+			}
+			this.getBoilTime = function() {
+				return (waterAmount * waterCapacity * temp) / power;
+			}
+			this.launch = function() {
+				// Проверка на пустую кофеварку при запуске
+				if ((waterAmount !=0)&&(coffeeAmount>=50)) {
+		var test = setTimeout(function() {
+					console.log('Ваш кофе готов!');
+				}, this.getBoilTime());
+			}
+			else if (waterAmount<=0){
+				console.error('Нет воды');
+			}
+			else if (coffeeAmount<=0) {
+				console.error('Нет кофе');
+			}
+			}
+			}
+		var vitek = new CoffeMachine(3000);
+		vitek.fillWater(50);
+		vitek.fillCoffe(50);
+		vitek.launch();
+		
+		</script>
+	</body>
+</html>
