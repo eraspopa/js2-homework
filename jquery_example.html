@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <form class="product-form">
+            <div class="form-group">
+                <label for="product">Название продукта</label>
+                <input type="text" name="product" class="form-control" id="product" placeholder="Введите название товара">
+            </div>
+            <div class="form-group">
+                <label for="price">Цена</label>
+                <input type="text" name="price" class="form-control" id="price" placeholder="Введите цену товара">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+		<form class="comment-form">
+		    <div class="form-group">
+                <label for="comment-text">Comment</label>
+                <input type="text" name="comment-text" class="form-control" id="comment-text" placeholder="Add comment">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+    </div>
+    <script>
+        var BASE_URL = 'http://89.108.65.123:8080';
+        var userId = null;
+		var commentId = null;
+
+        function createCart() {
+          $.ajax({
+            url: BASE_URL + '/shop',
+            success: function (shop) {
+              userId = shop['user_id'];
+            },
+            error: function (err) {
+              console.error(err);
+            }
+          })
+        }
+        function createProduct(productData) {
+          $.ajax({
+            url: BASE_URL + '/shop?user_id=' + productData.user_id + '&product=' +
+            productData.product +'&price='+ productData.price,
+            method: 'POST',
+            success: function (product) {
+              console.log(product)
+            },
+            error: function (err) {
+              console.error(err)
+            }
+          })
+        }
+
+        $('.product-form').on('submit', function (event) {
+          event.preventDefault();
+          var $this = $(this);
+          var productData = {
+              user_id: userId,
+              product: $this.find('#product').val(),
+              price: $this.find('#price').val(),
+          };
+          createProduct(productData);
+        });
+        createCart();
+		
+	function getCart() {
+          $.ajax({
+            url: BASE_URL + '/shop?user_id=_r54f5o455',
+            success: function (shop) {
+              console.log(shop)
+            },
+            error: function (err) {
+              console.error(err);
+            }
+          })
+        }
+		getCart();
+		
+		function deleteProduct(user_id, product_id) {
+          $.ajax({
+            url: BASE_URL + '/shop?user_id=' + user_id + '&product_id=' + product_id,
+			type: 'DELETE',
+            success: function (shop) {
+               console.log(shop.cart)
+            },
+            error: function (err) {
+              console.error(err)
+            }
+          })
+        }
+		deleteProduct('_r54f5o455','_qq4oggunn');
+		
+		function getComments() {
+          $.ajax({
+            url: BASE_URL + '/comments',
+            success: function (comments) {
+              console.log(comments)
+            },
+            error: function (err) {
+              console.error(err);
+            }
+          })
+        }
+		getComments();
+		
+		   function createComment(commentData) {
+          $.ajax({
+            url: BASE_URL + '/comments?text=' + commentData.text,
+            method: 'POST',
+            success: function (comment) {
+			userId = comment['comment_id'];
+            console.log(comment.comment_id)
+            },
+            error: function (err) {
+              console.error(err)
+            }
+          })
+        }
+		 $('.comment-form').on('submit', function (event) {
+          event.preventDefault();
+          var $this = $(this);
+          var commentData = {
+              comment_id: commentId,
+              text: $this.find('#comment-text').val(),
+          };
+          createComment(commentData);
+        });
+		
+			function deleteComment(comment_id) {
+          $.ajax({
+            url: BASE_URL + '/comments?comment_id=' + comment_id,
+			type: 'DELETE',
+            success: function () {
+               console.log('deleted')
+            },
+            error: function (err) {
+              console.error(err)
+            }
+          })
+        }
+		//deleteComment('_fh4obzv6k');
+		
+		function likeComment(comment_id) {
+          $.ajax({
+            url: BASE_URL + '/comments?comment_id=' + comment_id,
+			type: 'PATCH',
+            success: function (comment) {
+			comment.likes= comment.likes+1;
+               console.log(comment.likes)
+            },
+            error: function (err) {
+              console.error(err)
+            }
+          })
+        }
+		likeComment('_90kuyell3');
+    </script>
+</body>
+</html>

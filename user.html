@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+	<div class="alert alert-primary" id="current-message" role="alert">
+		Create new user
+	</div>
+   <div class="form-group">
+   <label for="name">Name</label>
+   <input type="text" id="name" class="form-control" placeholder="Vasya">
+   <label for="exampleFormControlInput1">Email address</label>
+    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+    <label for="age">Age</label>
+   <input type="text" id="age" class="form-control" placeholder="50">
+   </div>
+   <button type="submit" class="btn btn-primary" id="send">Отправить</button>
+   
+   <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    </tbody>
+</table>
+</div>
+<script type="text/javascript">
+	const baseURL = "http://89.108.65.123";
+	const name = document.querySelector('#name');
+	const email = document.querySelector('#email');
+	const age = document.querySelector('#age');
+	const submit = document.querySelector('#send'); 
+	const table = document.querySelector('table.table');
+
+	function User() {
+	this.age = age.value;
+	this.email = email.value;
+	this.name = name.value;
+	};
+
+	    const getUser = function(id) {
+		const xhr = new XMLHttpRequest();
+		xhr.open('GET', `${baseURL}/user/${id}`, true);
+		xhr.send();
+	    xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4 && xhr.status ==200)
+				{
+					const user = JSON.parse(xhr.responseText);
+					const row = document.createElement('tr');
+					const newNameCell = document.createElement('td');
+					newNameCell.innerHTML = user.name;
+					const newEmailCell = document.createElement('td');
+					newEmailCell.innerHTML = user.email;
+					const newAgeCell = document.createElement('td');
+					newAgeCell.innerHTML = user.age;
+					table.appendChild(row);
+					row.appendChild(newNameCell);
+					row.appendChild(newEmailCell);
+					row.appendChild(newAgeCell);
+
+				}
+			};
+		};
+getUser(1);
+getUser(2);
+
+
+const createUser = () => {
+		const xhr = new XMLHttpRequest();
+		xhr.open('POST', `${baseURL}/user/`, true);
+		const newUser= new User();
+		xhr.send(JSON.stringify(newUser));
+		xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4 && xhr.status ==200)
+			{
+				alert('Success!');
+			}
+		};
+	};
+submit.addEventListener('click', createUser);
+
+  	
+
+</script>
+</body>
+</html>
