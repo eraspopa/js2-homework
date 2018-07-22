@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+   <link rel="stylesheet" href="owlcarousel/owl.carousel.min.css">
+<link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css">
+  <style type="text/css">
+   
+.false {
+  outline: none;
+  border: 2px solid red; }
+  .owl-carousel{
+    margin: 50px 0;
+
+  }
+
+  </style>
+</head>
+<body>
+  <div class="owl-carousel">
+  <div><img src="https://d1aeri3ty3izns.cloudfront.net/media/36/366496/1200/preview.jpg"></div>
+  <div><img src="http://static1.squarespace.com/static/54c754fbe4b02724cc32f1ae/54c772b4e4b0f6cdd67e1235/54eace77e4b040d10d2682fa/1433822835538/?format=1000w"></div>
+  <div><img src="http://fc04.deviantart.net/fs48/f/2009/170/3/7/Vinyl_Record_by_Ruffnekk73.jpg" ></div>
+  <div><img src="https://d1aeri3ty3izns.cloudfront.net/media/36/366496/1200/preview.jpg"></div>
+  <div><img src="http://static1.squarespace.com/static/54c754fbe4b02724cc32f1ae/54c772b4e4b0f6cdd67e1235/54eace77e4b040d10d2682fa/1433822835538/?format=1000w"></div>
+  <div><img src="http://fc04.deviantart.net/fs48/f/2009/170/3/7/Vinyl_Record_by_Ruffnekk73.jpg"></div>
+</div>
+<div class="container">
+<form>
+   <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="Enter name" required="">
+  </div>
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" placeholder="Enter email" required="">
+  </div>
+  <div class="form-group">
+    <label for="tel">Phone</label>
+    <input type="tel" class="form-control" id="tel" placeholder="Enter phone" required="">
+  </div>
+  <div class="form-group">s
+    <label for="date">Date of birth</label>
+    <input type="date" class="form-control" id="date" placeholder="Enter date" required="">
+  </div>
+  <div class="form-group">
+    <label for="message">Message</label>
+    <input type="text" class="form-control" id="text" placeholder="Enter name">
+  </div>
+  </div>
+      <input type="submit" value="Отправить">
+</form>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="owlcarousel/owl.carousel.min.js"></script>
+<script>
+  
+(function ($) {
+  $(function () {
+    var name = $('#name'),
+        date = $('#date'),
+        tel = $('#tel'),
+        mail = $('#email'),
+        message = $('#text'),
+        nameRE = /^[a-zа-яё]{2,}$/i,
+        dateRE = /^\d\d[.,]\d\d[.,]\d{4}$/,
+        telRE = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/,
+        emailRE = /^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@{[a-zA-Z0-9_\-\.]+0\.([a-zA-Z]{2,5}){1,25})+)*$/,
+        messageRE = /\w+|[а-яё]+[,.!?@:;]*/gi;
+
+    $('input[type="submit"]').on('click', function () {
+      $('.container').append($('<div id="dialog" \>'));
+      function dialog(element, text) {
+        $('#dialog').append(element).dialog({
+          width: '400px',
+          buttons: {
+            OK: function () {
+              $(this).dialog('close');
+              $('#dialog').remove();
+            }
+          },
+          modal: true,
+          title: text
+        });
+      }
+      var i = 0;
+      function classListToggle(re, data) {
+        var test = re.test(data.val());
+        if (test) {
+          data.removeClass('false').parent().removeClass('wrong_date');
+          i++;
+          if (i === 6) {
+            alert("success!");
+          }
+        } else {
+          data.addClass('false').effect("bounce", {times: 3}, "slow");
+          var errorField = $('<div />').html('Wrong '+ data.prev().text());
+          dialog(errorField);
+        }
+      }
+      classListToggle(nameRE, name);
+      classListToggle(telRE, tel);
+      classListToggle(emailRE, mail);
+      classListToggle(dateRE, date);
+      classListToggle(messageRE, message);
+    });
+    
+  });
+})(jQuery);
+
+
+
+$(document).ready(function(){
+
+var owl = $('.owl-carousel');
+owl.owlCarousel({
+    items:6,
+    loop:true,
+    margin:10,
+    autoplay:true,
+    autoplayTimeout:1000,
+    autoplayHoverPause:true
+});
+$('.play').on('click',function(){
+    owl.trigger('play.owl.autoplay',[1000])
+})
+$('.stop').on('click',function(){
+    owl.trigger('stop.owl.autoplay')
+})
+});
+</script>
+</body>
+</html>
